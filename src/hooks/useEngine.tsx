@@ -40,7 +40,7 @@ const useEngine = () => {
       setState("finish");
       sumErrors();
     }
-  }, [timeleft, sumErrors]);
+  }, [timeleft, sumErrors, setState]);
 
   useEffect(() => {
     if (wordFinished) {
