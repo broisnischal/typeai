@@ -41,6 +41,7 @@ function App() {
 
   const [autoRestart, setAutoRestart] = useState<boolean>(false);
   const [modelOpen, setModelOpen] = useState<boolean>(false);
+  const [wide, setWide] = useState();
 
   const [fonts, setFonts] = useState<fonts>([
     "monospace",
@@ -85,7 +86,7 @@ function App() {
                   <Button time={120} onClick={() => setSecond(120)} />
                   <hr className="text-white/40 mb-3" />
                   <form>
-                    <label className="text-white mr-5" htmlFor="">
+                    <label className="text-white mr-5 mb-5" htmlFor="">
                       Words length
                     </label>
                     <input
