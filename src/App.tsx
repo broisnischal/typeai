@@ -149,6 +149,14 @@ function App() {
           />
         </>
       )}
+      <footer className="text-white/10 text-xs text-center mt-10">
+        <h6>
+          powered by &copy;{" "}
+          <a rel="noopener" target="_blank" href="https://nischal-dahal.com.np">
+            neeswebservices
+          </a>{" "}
+        </h6>
+      </footer>
     </>
   );
 }
