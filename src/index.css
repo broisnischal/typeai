@@ -4,6 +4,6 @@
 
 @layer base {
   body {
-    @apply min-h-screen bg-black/90 grid place-content-center font-mono tracking-wider px-4 select-none;
+    @apply min-h-screen bg-black/90 grid place-content-center tracking-wider px-4 select-none;
   }
 }

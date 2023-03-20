@@ -12,6 +12,18 @@ import cb from "classnames";
 import { easeInOut, motion } from "framer-motion";
 import Button from "./components/TimeButton";
 
+export type fonts = [
+  "monospace",
+  "sans",
+  "inter",
+  "Poppins",
+  "Roboto",
+  "Nunito",
+  "Open Sans",
+  "Fira code",
+  "Fira mono"
+];
+
 function App() {
   const {
     state,
@@ -29,6 +41,20 @@ function App() {
 
   const [autoRestart, setAutoRestart] = useState<boolean>(false);
   const [modelOpen, setModelOpen] = useState<boolean>(false);
+
+  const [fonts, setFonts] = useState<fonts>([
+    "monospace",
+    "sans",
+    "inter",
+    "Poppins",
+    "Roboto",
+    "Nunito",
+    "Open Sans",
+    "Fira code",
+    "Fira mono",
+  ]);
+
+  const [font, setFont] = useState("monospace");
 
   useEffect(() => {
     if (state === "finish" && autoRestart) {
@@ -76,6 +102,23 @@ function App() {
                       placeholder="Auto restart"
                       onChange={(e) => setAutoRestart((prev) => !prev)}
                     />
+                    <br />
+                    <label htmlFor="fonts" className="text-white mr-5">
+                      Choose font
+                    </label>
+                    <select
+                      about="Font"
+                      title="Select font"
+                      onChange={(e) => setFont(e.target.value)}
+                      name="fonts"
+                      id="fonts"
+                    >
+                      {fonts.map((item, index) => (
+                        <option value={item} key={index}>
+                          {item}
+                        </option>
+                      ))}
+                    </select>
                   </form>
                 </motion.div>
               </>
@@ -84,9 +127,9 @@ function App() {
         ))}
 
       <CountDownTimer timeLeft={timeleft}></CountDownTimer>
-      <WordContainer>
+      <WordContainer font={font}>
         <GeneratedWords words={words}></GeneratedWords>
-        <UserTypings userInput={typed} className="absolute inset-0" words={words} />
+        <UserTypings userInput={typed} className={`absolute inset-0`} words={words} />
       </WordContainer>
 
       {state === "finish" && (
@@ -109,9 +152,14 @@ function App() {
   );
 }
 
-const WordContainer = ({ children }: { children: React.ReactNode }) => {
+const WordContainer = ({ children, font }: { children: React.ReactNode; font: string }) => {
   return (
-    <div className="relative text-2xl leading-relaxed break-all max-w-xl mt-3">{children}</div>
+    <div
+      style={{ fontFamily: `${font}` }}
+      className={`font-${font} relative text-2xl leading-relaxed break-all max-w-xl mt-3`}
+    >
+      {children}
+    </div>
   );
 };
 
