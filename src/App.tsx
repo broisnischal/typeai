@@ -33,6 +33,7 @@ function App() {
   useEffect(() => {
     if (state === "finish" && autoRestart) {
       restart();
+      setModelOpen(false);
     }
   }, [autoRestart, state, restart]);
   return (
