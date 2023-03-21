@@ -162,7 +162,8 @@ function App() {
                     <input
                       className="cursor-pointer shadow checked:shadow-xl"
                       type="checkbox"
-                      checked={mainState.break}
+                      disabled
+                      checked={!mainState.break}
                       onChange={(e) => {
                         setMainState({ ...mainState, break: !mainState.break });
                       }}
@@ -215,7 +216,7 @@ function App() {
       )}
       <CountDownTimer timeLeft={timeleft}></CountDownTimer>
       <WordContainer wide={mainState.wide} wordBreak={mainState.break} font={mainState.font}>
-        <GeneratedWords words={words}></GeneratedWords>
+        <GeneratedWords wordBreak={mainState.break} words={words}></GeneratedWords>
         <UserTypings userInput={typed} className={`absolute inset-0`} words={words} />
       </WordContainer>
 
@@ -261,17 +262,25 @@ const WordContainer = ({
   return (
     <div
       style={{ fontFamily: `${font}` }}
-      className={`font-${font} relative  text-2xl  leading-relaxed ${
-        wordBreak ? "break-all" : ""
-      } ${wide ? "max-w-6xl" : "max-w-xl"}  mt-3 w-fit `}
+      className={`font-${font} relative text-2xl leading-relaxed ${
+        wordBreak ? "break-all" : "text-justify"
+      } ${wide ? "max-w-6xl" : "max-w-xl"}`}
     >
       {children}
     </div>
   );
 };
 
-const GeneratedWords = ({ words }: { words: string }): ReactElement => {
-  return <div className="mt-10  text-slate-500 z-0 ">{words}</div>;
+const GeneratedWords = ({
+  words,
+  wordBreak,
+}: {
+  words: string;
+  wordBreak: boolean;
+}): ReactElement => {
+  return (
+    <div className={`mt-10  text-slate-500 ${wordBreak ? "break-all" : ""}  z-0`}>{words}</div>
+  );
 };
 
 const CountDownTimer = ({ timeLeft }: { timeLeft: number }) => {
