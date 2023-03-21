@@ -1,13 +1,19 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 
-const isKeyCodeAllowed = (code: string) => {
+const isKeyCodeAllowed = (event: KeyboardEvent) => {
+  if (event.ctrlKey) {
+    return false;
+  }
+
+  const code = event.code;
   return (
     code.startsWith("Key") ||
     code.startsWith("Digit") ||
     code === "Backspace" ||
     code === "Space" ||
-    code === "Ctrl" ||
     code === "/" ||
+    code === "." ||
+    code === ">" ||
     code === "!" ||
     code === "#" ||
     code === "%" ||
@@ -15,7 +21,7 @@ const isKeyCodeAllowed = (code: string) => {
     code === ")" ||
     code === "(" ||
     code === "[" ||
-    code === "/]" ||
+    code === "]" ||
     code === "<" ||
     code === ">"
   );
@@ -33,7 +39,7 @@ const useTypings = (enabled: boolean) => {
       // event.preventDefault();
       event.stopPropagation();
       const { key, code } = event;
-      if (!enabled || !isKeyCodeAllowed(code)) return;
+      if (!enabled || !isKeyCodeAllowed(event)) return;
 
       switch (key) {
         case "Backspace":
