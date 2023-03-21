@@ -14,7 +14,7 @@ export const initialState = JSON.parse(localStorage.getItem("mainState") as stri
   break: false,
   font: "monospace",
   wide: true,
-  hard: true,
+  hard: false,
 };
 
 const useEngine = () => {
