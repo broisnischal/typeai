@@ -262,9 +262,9 @@ const WordContainer = ({
   return (
     <div
       style={{ fontFamily: `${font}` }}
-      className={`font-${font} relative text-2xl leading-relaxed ${
-        wordBreak ? "break-all" : "text-justify"
-      } ${wide ? "max-w-6xl" : "max-w-xl"}`}
+      className={`font-${font} relative text-2xl leading-relaxed ${wordBreak ? "break-all" : ""} ${
+        wide ? "max-w-6xl" : "max-w-xl"
+      }`}
     >
       {children}
     </div>
