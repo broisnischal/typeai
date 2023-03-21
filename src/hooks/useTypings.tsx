@@ -1,15 +1,19 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 
 const isKeyCodeAllowed = (event: KeyboardEvent) => {
-  if (event.ctrlKey) {
-    if (event.key === "r") {
-      window.location.reload();
-    }
+  if (navigator.userAgent.indexOf("Firefox") != -1) {
+    //some specific code for Mozilla
 
-    if (event.key === "f") {
-    }
+    if (event.ctrlKey) {
+      if (event.key === "r") {
+        window.location.reload();
+      }
 
-    return false;
+      if (event.key === "f") {
+      }
+
+      return false;
+    }
   }
 
   const code = event.code;
@@ -45,7 +49,10 @@ const useTypings = (enabled: boolean) => {
 
   const keyboardHandler = useCallback(
     (event: KeyboardEvent) => {
-      event.preventDefault();
+      if (navigator.userAgent.indexOf("Firefox") != -1) {
+        //some specific code for Mozilla
+        event.preventDefault();
+      }
       event.stopPropagation();
       const { key, code } = event;
       if (!enabled || !isKeyCodeAllowed(event)) return;
