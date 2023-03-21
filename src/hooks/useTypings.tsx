@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 
 const isKeyCodeAllowed = (event: KeyboardEvent) => {
-  if (event.code.startsWith("Digit")) return;
+  // if (event.code.startsWith("Digit")) return;
 
   if (navigator.userAgent.indexOf("Firefox") != -1) {
     if (event.ctrlKey) {
