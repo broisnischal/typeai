@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 import Caret from "./Caret";
 import cn from "classnames";
+import useEngine from "../hooks/useEngine";
+import { useCallback } from "react";
 
 const UserTypings = ({
   userInput,

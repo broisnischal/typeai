@@ -14,6 +14,7 @@ export const initialState = JSON.parse(localStorage.getItem("mainState") as stri
   break: false,
   font: "monospace",
   wide: true,
+  hard: true,
 };
 
 const useEngine = () => {
@@ -76,7 +77,9 @@ const useEngine = () => {
   }, [clearTyped, updateWords, resetCount, resetTotalTyped]);
 
   return {
+    setState,
     state,
+    sumErrors,
     totalTyped,
     restart,
     setNumberWords,
