@@ -134,7 +134,7 @@ function App() {
                     className="focus:outline-none flex-1 text-white/80 py-1 focus:text-white  bg-white/5 rounded  px-5"
                     type="number"
                     min={10}
-                    value={NUMBER_OF_WORDS}
+                    defaultValue={NUMBER_OF_WORDS}
                     onChange={(e) => {
                       // e.stopPropagation();
                       if (Number(e.target.value) <= 0) {
@@ -163,7 +163,7 @@ function App() {
                       className="cursor-pointer shadow checked:shadow-xl"
                       type="checkbox"
                       disabled
-                      checked={!mainState.break}
+                      checked={mainState.break}
                       onChange={(e) => {
                         setMainState({ ...mainState, break: !mainState.break });
                       }}
