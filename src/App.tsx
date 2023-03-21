@@ -58,20 +58,18 @@ function App() {
     "Fira mono",
   ]);
 
-  const [font, setFont] = useState(mainState.font);
-
   useEffect(() => {
-    if (state === "finish" && autoRestart) {
+    if (state === "finish" && mainState.restart) {
       restart();
     }
     if (state === "finish") {
       setModelOpen(false);
     }
-  }, [autoRestart, state, restart]);
+  }, [mainState.restart, state, restart]);
 
   return (
     <>
-      {(state === "finish" || state === "start") && (
+      {(state === "finish" || state === "start" || mainState.restart) && (
         <div
           ref={typeRef}
           className="setting z-40 backdrop-blur-sm  fixed top-10 right-10 flex w-25 flex-col  items-end"
@@ -92,6 +90,14 @@ function App() {
                 className="modal mt-2 bg-white/5 p-5 rounded  "
               >
                 <div className="mb-2">
+                  <Button
+                    current={SECOND}
+                    time={15}
+                    onClick={() => {
+                      setSecond(15);
+                      setMainState({ ...mainState, second: 15 });
+                    }}
+                  />
                   <Button
                     current={SECOND}
                     time={30}
