@@ -39,6 +39,16 @@ function App() {
     errors,
   } = useEngine();
 
+  // function keyDownListener(e: Event) {
+  //   console.log(e);
+  // }
+
+  // useEffect(() => {
+  //   window.addEventListener("keydown", keyDownListener, true);
+
+  //   return window.removeEventListener("keydown", keyDownListener, true);
+  // }, [keyDownListener]);
+
   const [autoRestart, setAutoRestart] = useState<boolean>(false);
   const [modelOpen, setModelOpen] = useState<boolean>(false);
   const [wide, setWide] = useState();

@@ -2,7 +2,22 @@ import { useEffect, useRef, useState, useCallback } from "react";
 
 const isKeyCodeAllowed = (code: string) => {
   return (
-    code.startsWith("Key") || code.startsWith("Digit") || code === "Backspace" || code === "Space"
+    code.startsWith("Key") ||
+    code.startsWith("Digit") ||
+    code === "Backspace" ||
+    code === "Space" ||
+    code === "Ctrl" ||
+    code === "/" ||
+    code === "!" ||
+    code === "#" ||
+    code === "%" ||
+    code === "^" ||
+    code === ")" ||
+    code === "(" ||
+    code === "[" ||
+    code === "/]" ||
+    code === "<" ||
+    code === ">"
   );
 };
 
@@ -15,7 +30,7 @@ const useTypings = (enabled: boolean) => {
 
   const keyboardHandler = useCallback(
     (event: KeyboardEvent) => {
-      event.preventDefault();
+      // event.preventDefault();
       event.stopPropagation();
       const { key, code } = event;
       if (!enabled || !isKeyCodeAllowed(code)) return;
@@ -24,7 +39,7 @@ const useTypings = (enabled: boolean) => {
         case "Backspace":
           setTyped((prev) => prev.slice(0, -1));
           setCursor(cursor - 1);
-          totalTyped.current -= 1;
+          totalTyped.current === 0 ? null : (totalTyped.current -= 1);
           break;
         default:
           setTyped((prev) => prev.concat(key));
