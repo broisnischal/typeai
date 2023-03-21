@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useEffect, useState, useRef } from "react";
 import RestartButton from "./components/Restart";
 import Results from "./components/Results";
 import UserTypings from "./components/UserTyping";
@@ -52,6 +52,7 @@ function App() {
   const [autoRestart, setAutoRestart] = useState<boolean>(false);
   const [modelOpen, setModelOpen] = useState<boolean>(false);
   const [wide, setWide] = useState();
+  const typeRef = useRef<HTMLDivElement>(null);
 
   const [fonts, setFonts] = useState<fonts>([
     "monospace",
@@ -77,9 +78,12 @@ function App() {
     <>
       {state === "finish" ||
         (state === "start" && (
-          <div className="setting fixed top-10 right-10 flex flex-col items-end">
+          <div ref={typeRef} className="setting fixed top-10 right-10 flex flex-col items-end">
             <AiFillSetting
-              onClick={() => setModelOpen((prev) => !prev)}
+              onClick={() => {
+                setModelOpen((prev) => !prev);
+                // typeRef.current?.blur;
+              }}
               className="cursor-pointer t-10 l-10 text-white "
             />
             {modelOpen && (
@@ -136,13 +140,12 @@ function App() {
             )}
           </div>
         ))}
-
-      <CountDownTimer timeLeft={timeleft}></CountDownTimer>
+      <CountDownTimer timeLeft={timeleft}></CountDownTimer>(
       <WordContainer font={font}>
         <GeneratedWords words={words}></GeneratedWords>
         <UserTypings userInput={typed} className={`absolute inset-0`} words={words} />
       </WordContainer>
-
+      )
       {state === "finish" && (
         <>
           <RestartButton

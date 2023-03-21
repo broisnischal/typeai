@@ -2,6 +2,13 @@ import { useEffect, useRef, useState, useCallback } from "react";
 
 const isKeyCodeAllowed = (event: KeyboardEvent) => {
   if (event.ctrlKey) {
+    if (event.key === "r") {
+      window.location.reload();
+    }
+
+    if (event.key === "f") {
+    }
+
     return false;
   }
 
@@ -11,17 +18,19 @@ const isKeyCodeAllowed = (event: KeyboardEvent) => {
     code.startsWith("Digit") ||
     code === "Backspace" ||
     code === "Space" ||
-    code === "/" ||
-    code === "." ||
-    code === ">" ||
-    code === "!" ||
+    code === "Slash" ||
+    code === "Period" ||
+    code === "Quote" ||
+    code === "Semicolon" ||
+    code === "Comma" ||
+    code === "Backslash" ||
     code === "#" ||
     code === "%" ||
     code === "^" ||
     code === ")" ||
     code === "(" ||
-    code === "[" ||
-    code === "]" ||
+    code === "BracketLeft" ||
+    code === "BracketRight" ||
     code === "<" ||
     code === ">"
   );
@@ -36,7 +45,7 @@ const useTypings = (enabled: boolean) => {
 
   const keyboardHandler = useCallback(
     (event: KeyboardEvent) => {
-      // event.preventDefault();
+      event.preventDefault();
       event.stopPropagation();
       const { key, code } = event;
       if (!enabled || !isKeyCodeAllowed(event)) return;
