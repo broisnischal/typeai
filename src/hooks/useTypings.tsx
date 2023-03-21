@@ -14,7 +14,10 @@ const useTypings = (enabled: boolean) => {
   const totalTyped = useRef(0);
 
   const keyboardHandler = useCallback(
-    ({ key, code }: KeyboardEvent) => {
+    (event: KeyboardEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const { key, code } = event;
       if (!enabled || !isKeyCodeAllowed(code)) return;
 
       switch (key) {
