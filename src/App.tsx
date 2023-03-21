@@ -153,6 +153,17 @@ function App() {
                     }}
                   />
                   <div className="my-2">
+                    <span className="text-white mr-2">Exit on error : </span>
+                    <input
+                      className="cursor-pointer shadow checked:shadow-xl"
+                      type="checkbox"
+                      checked={mainState.hard}
+                      onChange={(e) => {
+                        setMainState({ ...mainState, hard: !mainState.hard });
+                      }}
+                    />
+                  </div>
+                  <div className="my-2">
                     <span className="text-white mr-2">Auto restart : </span>
                     <input
                       className="cursor-pointer shadow checked:shadow-xl"
@@ -185,7 +196,7 @@ function App() {
                     name="fonts"
                     id="fonts"
                   >
-                    <option disabled value={mainState.font} selected>
+                    <option disabled defaultValue={mainState.font}>
                       {mainState.font}
                     </option>
                     {fonts.map((item, index) => (

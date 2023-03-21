@@ -36,9 +36,9 @@ const useEngine = () => {
     localStorage.setItem("mainState", JSON.stringify(mainState));
   }, [mainState]);
 
-  useEffect(() => {
-    restart();
-  }, [SECOND, NUMBER_OF_WORDS]);
+  // useEffect(() => {
+  //   restart();
+  // }, [SECOND, NUMBER_OF_WORDS]);
 
   const sumErrors = useCallback(() => {
     const wordReached = words.substring(0, cursor);
@@ -58,6 +58,21 @@ const useEngine = () => {
       sumErrors();
     }
   }, [timeleft, sumErrors, setState]);
+
+  useEffect(() => {
+    if (mainState.hard) {
+      const typedWords = typed.split("");
+      const mainWords = words.split("");
+
+      typedWords.map((item, index) => {
+        if (mainWords[index] !== item) {
+          setState("finish");
+          sumErrors();
+          resetCount();
+        }
+      });
+    }
+  }, [typed, words, setState, sumErrors, clearTyped, resetCount, mainState.hard]);
 
   useEffect(() => {
     if (wordFinished) {
