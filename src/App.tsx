@@ -157,8 +157,8 @@ function App() {
                       }}
                     />
                   </div>
-                  <div className="my-2">
-                    <span className="text-white mr-2">Word Break : </span>
+                  <div className="my-2 ">
+                    <span className="text-white/30 mr-2 line-through">Word Break : </span>
                     <input
                       className="cursor-pointer shadow checked:shadow-xl"
                       type="checkbox"
@@ -262,7 +262,7 @@ const WordContainer = ({
   return (
     <div
       style={{ fontFamily: `${font}` }}
-      className={`font-${font} relative text-2xl leading-relaxed ${wordBreak ? "break-all" : ""} ${
+      className={`font-${font} relative text-2xl leading-relaxed break-all ${
         wide ? "max-w-6xl" : "max-w-xl"
       }`}
     >
@@ -278,9 +278,7 @@ const GeneratedWords = ({
   words: string;
   wordBreak: boolean;
 }): ReactElement => {
-  return (
-    <div className={`mt-10  text-slate-500 ${wordBreak ? "break-all" : ""}  z-0`}>{words}</div>
-  );
+  return <div className="mt-10  text-slate-500 break-all  z-0">{words}</div>;
 };
 
 const CountDownTimer = ({ timeLeft }: { timeLeft: number }) => {

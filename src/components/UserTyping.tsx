@@ -33,7 +33,7 @@ const Character = ({ actual, expected }: { actual: string; expected: string }) =
         "text-red-500": !isCorrect && !isWhiteSpace,
         "text-primary-400": isCorrect && !isWhiteSpace,
         "bg-red-500/50": !isCorrect && isWhiteSpace,
-        "bg-white/5": isCorrect && isWhiteSpace,
+        "border-b-4 border-white/5": isCorrect && isWhiteSpace,
       })}
     >
       {expected}
