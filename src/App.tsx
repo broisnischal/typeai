@@ -140,12 +140,12 @@ function App() {
             )}
           </div>
         ))}
-      <CountDownTimer timeLeft={timeleft}></CountDownTimer>(
+      <CountDownTimer timeLeft={timeleft}></CountDownTimer>
       <WordContainer font={font}>
         <GeneratedWords words={words}></GeneratedWords>
         <UserTypings userInput={typed} className={`absolute inset-0`} words={words} />
       </WordContainer>
-      )
+
       {state === "finish" && (
         <>
           <RestartButton
