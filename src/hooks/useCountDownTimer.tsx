@@ -4,7 +4,6 @@ const useCountDownTimer = (seconds: number) => {
   const intervalRef = useRef<any | null>(null);
 
   const startTimer = useCallback(() => {
-    console.log("Starting timer");
     intervalRef.current = setInterval(() => {
       setTimeleft((timeleft) => timeleft - 1);
     }, 1000);
