@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 
 const isKeyCodeAllowed = (event: KeyboardEvent) => {
-  if (navigator.userAgent.indexOf("Firefox") != -1) {
-    //some specific code for Mozilla
+  if (event.code.startsWith("Digit")) return;
 
+  if (navigator.userAgent.indexOf("Firefox") != -1) {
     if (event.ctrlKey) {
       if (event.key === "r") {
         window.location.reload();
@@ -50,7 +50,6 @@ const useTypings = (enabled: boolean) => {
   const keyboardHandler = useCallback(
     (event: KeyboardEvent) => {
       if (navigator.userAgent.indexOf("Firefox") != -1) {
-        //some specific code for Mozilla
         event.preventDefault();
       }
       event.stopPropagation();

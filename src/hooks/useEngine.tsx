@@ -3,12 +3,24 @@ import useWords from "./useWords";
 import useCountDownTimer from "./useCountDownTimer";
 import useTypings from "./useTypings";
 import { countErrors } from "../utils/helpers";
+// import { initialState } from "../App";
 
 export type State = "start" | "run" | "finish";
 
+export const initialState = JSON.parse(localStorage.getItem("mainState") as string) ?? {
+  second: 30,
+  words: 30,
+  restart: false,
+  break: false,
+  font: "monospace",
+  wide: true,
+};
+
 const useEngine = () => {
-  const [SECOND, setSecond] = useState<number>(30);
-  const [NUMBER_OF_WORDS, setNumberWords] = useState<number>(12);
+  const [mainState, setMainState] = useState({ ...initialState });
+
+  const [SECOND, setSecond] = useState<number>(mainState.second);
+  const [NUMBER_OF_WORDS, setNumberWords] = useState<number>(mainState.words);
 
   const [state, setState] = useState<State>("start");
   const { words, updateWords } = useWords(NUMBER_OF_WORDS);
@@ -18,6 +30,10 @@ const useEngine = () => {
   const [errors, setErrors] = useState(0);
   const isStarting = state === "start" && cursor > 0;
   const wordFinished = cursor === words.length;
+
+  useEffect(() => {
+    localStorage.setItem("mainState", JSON.stringify(mainState));
+  }, [mainState]);
 
   useEffect(() => {
     restart();
@@ -72,6 +88,9 @@ const useEngine = () => {
     resetCount,
     typed,
     NUMBER_OF_WORDS,
+    SECOND,
+    mainState,
+    setMainState,
   };
 };
 

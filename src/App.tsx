@@ -9,7 +9,7 @@ import useEngine from "./hooks/useEngine";
 import { countAccuracyPercentage } from "./utils/helpers";
 import { AiFillSetting } from "react-icons/ai";
 import cb from "classnames";
-import { easeInOut, motion } from "framer-motion";
+import { easeInOut, motion, useForceUpdate } from "framer-motion";
 import Button from "./components/TimeButton";
 
 export type fonts = [
@@ -32,26 +32,18 @@ function App() {
     setNumberWords,
     words,
     timeleft,
+    SECOND,
     resetCount,
     totalTyped,
     NUMBER_OF_WORDS,
     typed,
     errors,
+    mainState,
+    setMainState,
   } = useEngine();
 
-  // function keyDownListener(e: Event) {
-  //   console.log(e);
-  // }
-
-  // useEffect(() => {
-  //   window.addEventListener("keydown", keyDownListener, true);
-
-  //   return window.removeEventListener("keydown", keyDownListener, true);
-  // }, [keyDownListener]);
-
-  const [autoRestart, setAutoRestart] = useState<boolean>(false);
+  const [autoRestart, setAutoRestart] = useState<boolean>(mainState.restart);
   const [modelOpen, setModelOpen] = useState<boolean>(false);
-  const [wide, setWide] = useState();
   const typeRef = useRef<HTMLDivElement>(null);
 
   const [fonts, setFonts] = useState<fonts>([
@@ -66,82 +58,163 @@ function App() {
     "Fira mono",
   ]);
 
-  const [font, setFont] = useState("monospace");
+  const [font, setFont] = useState(mainState.font);
 
   useEffect(() => {
     if (state === "finish" && autoRestart) {
       restart();
+    }
+    if (state === "finish") {
       setModelOpen(false);
     }
   }, [autoRestart, state, restart]);
+
   return (
     <>
-      {state === "finish" ||
-        (state === "start" && (
-          <div ref={typeRef} className="setting fixed top-10 right-10 flex flex-col items-end">
-            <AiFillSetting
-              onClick={() => {
-                setModelOpen((prev) => !prev);
-                // typeRef.current?.blur;
-              }}
-              className="cursor-pointer t-10 l-10 text-white "
-            />
-            {modelOpen && (
-              <>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3, ease: easeInOut }}
-                  className="modal mt-5 bg-black/20 p-5 rounded"
-                >
-                  <Button time={30} onClick={() => setSecond(30)} />
-                  <Button time={60} onClick={() => setSecond(60)} />
-                  <Button time={90} onClick={() => setSecond(90)} />
-                  <Button time={120} onClick={() => setSecond(120)} />
-                  <hr className="text-white/40 mb-3" />
-                  <form>
-                    <label className="text-white mr-5 mb-5" htmlFor="">
-                      Words length
-                    </label>
+      {(state === "finish" || state === "start") && (
+        <div
+          ref={typeRef}
+          className="setting z-40 backdrop-blur-sm  fixed top-10 right-10 flex w-25 flex-col  items-end"
+        >
+          <AiFillSetting
+            onClick={() => {
+              setModelOpen((prev) => !prev);
+              // typeRef.current?.blur;
+            }}
+            className="cursor-pointer text-2xl t-10 l-10 text-white "
+          />
+          {modelOpen && (
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3, ease: easeInOut }}
+                className="modal mt-2 bg-white/5 p-5 rounded  "
+              >
+                <div className="mb-2">
+                  <Button
+                    current={SECOND}
+                    time={30}
+                    onClick={() => {
+                      setSecond(30);
+                      setMainState({ ...mainState, second: 30 });
+                    }}
+                  />
+                  <Button
+                    current={SECOND}
+                    time={60}
+                    onClick={() => {
+                      setSecond(60);
+                      setMainState({ ...mainState, second: 60 });
+                    }}
+                  />
+                  <Button
+                    current={SECOND}
+                    time={90}
+                    onClick={() => {
+                      setSecond(90);
+                      setMainState({ ...mainState, second: 90 });
+                    }}
+                  />
+                  <Button
+                    current={SECOND}
+                    time={120}
+                    onClick={() => {
+                      setSecond(120);
+                      setMainState({ ...mainState, second: 120 });
+                    }}
+                  />
+                </div>
+                <hr className="text-white/20 mb-3" />
+                <form>
+                  <label className="text-white flex-2 mr-5 mb-5" htmlFor="">
+                    Words length
+                  </label>
+                  <input
+                    className="focus:outline-none flex-1 text-white/80 py-1 focus:text-white  bg-white/5 rounded  px-5"
+                    type="number"
+                    min={10}
+                    value={NUMBER_OF_WORDS}
+                    onChange={(e) => {
+                      // e.stopPropagation();
+                      if (Number(e.target.value) <= 0) {
+                        setMainState({ ...mainState, words: 10 });
+                        setNumberWords(10);
+                        return;
+                      }
+                      setMainState({ ...mainState, words: Number(e.target.value) });
+                      setNumberWords(Number(e.target.value));
+                    }}
+                  />
+                  <div className="my-2">
+                    <span className="text-white mr-2">Auto restart : </span>
                     <input
-                      className="focus:outline-none text-white focus:text-cyan-500 bg-transparent w-fit rounded-none px-5"
-                      type="number"
-                      placeholder="12"
-                      value={NUMBER_OF_WORDS}
-                      onChange={(e) => setNumberWords(Number(e.target.value))}
-                    />
-                    <br />
-                    <span className="text-white">Auto restart : </span>
-                    <input
+                      className="cursor-pointer shadow checked:shadow-xl"
                       type="checkbox"
-                      placeholder="Auto restart"
-                      onChange={(e) => setAutoRestart((prev) => !prev)}
+                      checked={mainState.restart}
+                      onChange={(e) => {
+                        setMainState({ ...mainState, restart: !mainState.restart });
+                      }}
                     />
-                    <br />
-                    <label htmlFor="fonts" className="text-white mr-5">
-                      Choose font
-                    </label>
-                    <select
-                      about="Font"
-                      title="Select font"
-                      onChange={(e) => setFont(e.target.value)}
-                      name="fonts"
-                      id="fonts"
-                    >
-                      {fonts.map((item, index) => (
-                        <option value={item} key={index}>
-                          {item}
-                        </option>
-                      ))}
-                    </select>
-                  </form>
-                </motion.div>
-              </>
-            )}
-          </div>
-        ))}
+                  </div>
+                  <div className="my-2">
+                    <span className="text-white mr-2">Word Break : </span>
+                    <input
+                      className="cursor-pointer shadow checked:shadow-xl"
+                      type="checkbox"
+                      checked={mainState.break}
+                      onChange={(e) => {
+                        setMainState({ ...mainState, break: !mainState.break });
+                      }}
+                    />
+                  </div>
+                  <label htmlFor="fonts" className="text-white text-xl mr-3">
+                    Choose font
+                  </label>
+                  <select
+                    about="Font"
+                    title="Select font"
+                    onChange={(e) => setMainState({ ...mainState, font: e.target.value })}
+                    name="fonts"
+                    id="fonts"
+                  >
+                    <option disabled value={mainState.font} selected>
+                      {mainState.font}
+                    </option>
+                    {fonts.map((item, index) => (
+                      <option value={item} key={index}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                </form>
+                <div className="mt-2">
+                  <button
+                    type="button"
+                    onClick={(e) => setMainState({ ...mainState, wide: true })}
+                    className={`px-5 py-2 mt-1  mr-5 text-sm rounded bg-white/10 hover:bg-white/20 text-white ${
+                      mainState.wide === true && "outline md:outline-1"
+                    } `}
+                  >
+                    Wide
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(e) => setMainState({ ...mainState, wide: false })}
+                    className={`px-5 py-2 mt-1 text-sm rounded bg-white/10 hover:bg-white/20 text-white ${
+                      mainState.wide === false && "outline md:outline-1"
+                    } `}
+                  >
+                    Thin
+                  </button>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </div>
+      )}
       <CountDownTimer timeLeft={timeleft}></CountDownTimer>
-      <WordContainer font={font}>
+      <WordContainer wide={mainState.wide} wordBreak={mainState.break} font={mainState.font}>
         <GeneratedWords words={words}></GeneratedWords>
         <UserTypings userInput={typed} className={`absolute inset-0`} words={words} />
       </WordContainer>
@@ -174,11 +247,23 @@ function App() {
   );
 }
 
-const WordContainer = ({ children, font }: { children: React.ReactNode; font: string }) => {
+const WordContainer = ({
+  children,
+  font,
+  wordBreak,
+  wide,
+}: {
+  children: React.ReactNode;
+  font: string;
+  wordBreak: boolean;
+  wide: boolean;
+}) => {
   return (
     <div
       style={{ fontFamily: `${font}` }}
-      className={`font-${font} relative text-2xl leading-relaxed break-all max-w-xl mt-3`}
+      className={`font-${font} relative  text-2xl  leading-relaxed ${
+        wordBreak ? "break-all" : ""
+      } ${wide ? "max-w-6xl" : "max-w-xl"}  mt-3 w-fit `}
     >
       {children}
     </div>
@@ -186,11 +271,11 @@ const WordContainer = ({ children, font }: { children: React.ReactNode; font: st
 };
 
 const GeneratedWords = ({ words }: { words: string }): ReactElement => {
-  return <div className="mt-10  text-slate-500 ">{words}</div>;
+  return <div className="mt-10  text-slate-500 z-0 ">{words}</div>;
 };
 
 const CountDownTimer = ({ timeLeft }: { timeLeft: number }) => {
-  return <h2 className="text-primary-400  font-medium">Timeleft : {timeLeft}</h2>;
+  return <h2 className="text-yellow-400 text-base">Timeleft : {timeLeft}</h2>;
 };
 
 export default App;
