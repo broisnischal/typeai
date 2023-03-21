@@ -36,9 +36,9 @@ const useEngine = () => {
     localStorage.setItem("mainState", JSON.stringify(mainState));
   }, [mainState]);
 
-  // useEffect(() => {
-  //   restart();
-  // }, [SECOND, NUMBER_OF_WORDS]);
+  useEffect(() => {
+    restart();
+  }, [SECOND, NUMBER_OF_WORDS]);
 
   const sumErrors = useCallback(() => {
     const wordReached = words.substring(0, cursor);
